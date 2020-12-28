@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import Bill, Coin
-from .serializers import CoinSerializer, BillSerializer
+from .serializers import CoinSerializer, BillSerializer, CurrencySerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .consts import *
@@ -228,6 +228,11 @@ class BillViewSet(viewsets.ModelViewSet):
 class CoinViewSet(viewsets.ModelViewSet):
     queryset = Coin.objects.all()
     serializer_class = CoinSerializer
+
+
+class CurrencyViewSet(viewsets.ModelViewSet):
+    queryset = Coin.objects.all()
+    serializer_class = CurrencySerializer
 
 
 @api_view(['GET'])
