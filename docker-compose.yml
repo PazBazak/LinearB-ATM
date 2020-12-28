@@ -4,6 +4,7 @@ services:
   app:
     build:
       context: .
+    image: yolobazak/linearb-atm_app
     ports:
       - "8000:8000"
     volumes:
