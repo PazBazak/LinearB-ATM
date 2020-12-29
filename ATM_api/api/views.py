@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Bill, Coin
+from .models import Bill, Coin, Currency
 from .serializers import CoinSerializer, BillSerializer, CurrencySerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -237,8 +237,13 @@ class CurrencyViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def show_inventory(request):
-    # todo - make it show everything!
-    data = get_inventory('ILS')
+    data = {}
+    currencies = Currency.objects.all()
+
+    for currency in currencies:
+        currency_inventory = get_inventory(currency.name)
+        data[currency.name] = currency_inventory
+
     return Response(data, status=status.HTTP_200_OK)
 
 
