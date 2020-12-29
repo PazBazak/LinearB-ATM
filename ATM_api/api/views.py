@@ -231,7 +231,7 @@ class CoinViewSet(viewsets.ModelViewSet):
 
 
 class CurrencyViewSet(viewsets.ModelViewSet):
-    queryset = Coin.objects.all()
+    queryset = Currency.objects.all()
     serializer_class = CurrencySerializer
 
 
