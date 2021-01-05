@@ -27,6 +27,27 @@ def is_float(string):
     return is_float_
 
 
+def withdraw_from_db(bills: dict, coins: dict) -> None:
+    """
+    Receives the bills and coins that the ATM is wishing to withdraw, after all the verification needed, thus
+    it trust that the DB has this amount of records, and removes them from the DB.
+    """
+    for bill_type, bill_amount in bills.items():
+
+        if bill_amount:
+            # Bill.objects.filter(value=BILLS_VALUES[bill_type])[:bill_amount].delete()
+            Bill.objects.filter(pk__in=Bill.objects.filter(
+                value=BILLS_VALUES[bill_type]
+            ).values_list(PK)[:bill_amount]).delete()
+
+    for coin_type, coin_amount in coins.items():
+
+        if coin_amount:
+            Coin.objects.filter(pk__in=Coin.objects.filter(
+                value=COINS_VALUES[coin_type]
+            ).values_list(PK)[:coin_amount]).delete()
+
+
 def withdraw_from_atm(inventory: dict, amount: float) -> dict:
     """
     withdraw the amount from the inventory in the most optimal way!
@@ -168,6 +189,9 @@ def withdraw_from_atm(inventory: dict, amount: float) -> dict:
     # the ATM could not give the user all the money!
     if amount != 0:
         return ERROR_AMOUNT_RES
+
+    # withdraws from the DB
+    withdraw_from_db(bills, coins)
 
     return {"results": {
         "bills": bills,
